@@ -1,0 +1,72 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="account_manager_list">
+      <field name="name">account_manager_list</field>
+      <field name="model">account_manager</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" force_save="1"/>
+          <field name="company_id"/>
+          <field name="currency_id"/>
+          <field name="integration_username"/>
+          <field name="integration_password" password="1"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="account_manager_form">
+      <field name="name">account_manager_form</field>
+      <field name="model">account_manager</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <h1>
+              <field name="name"/>
+            </h1>
+
+          <group>
+            <field name="company_id"/>
+          <field name="currency_id"/>
+          </group>
+          <group>
+            <field name="integration_username"/>
+          <field name="integration_password" password="1"/>
+          </group>
+          </sheet>
+          <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+
+          </div>
+
+
+        </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="account_manager_action_window">
+      <field name="name">Account Manager</field>
+      <field name="res_model">account_manager</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+   <menuitem id="payment_integration" name="Sita Payment Integration" sequence="1"/>
+<!--    <menuitem name="Payment Integration" id="payment_integration" />-->
+    <menuitem name="Account manager" id="account_manager_menu" parent="payment_integration" action="account_manager_action_window" sequence="100"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="sita_payment_integration.menu_1_list" parent="sita_payment_integration.menu_1"
+              action="sita_payment_integration.action_window"/>
+    <menuitem name="Server to list" id="sita_payment_integration" parent="sita_payment_integration.menu_2"
+              action="sita_payment_integration.action_server"/>
+-->
+  </data>
+</odoo>
