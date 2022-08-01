@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <script src="https://test-nbe.gateway.mastercard.com/static/checkout/checkout.min.js"
+                data-error="errorCallback"
+                data-cancel="cancelCallback" >
+<!--                data-complete="completeCallback">-->
+
+        </script>
+<!--         <script src="https://test-nbe.gateway.mastercard.com/static/checkout/checkout.min.js"-->
+<!--                data-error="errorCallback"-->
+<!--                data-cancel="cancelCallback">-->
+<!--        </script>-->
+
+<!--        <script src="https://test-nbe.gateway.mastercard.com/checkout/version/61/checkout.js"-->
+<!--                data-error="error callback"-->
+<!--                data-cancel="cancel callback">-->
+<!--        </script>-->
+
+
+
+        <script type="text/javascript">
+            function errorCallback(error) {
+                  console.log(JSON.stringify(error));
+            }
+            function cancelCallback() {
+                  console.log('Payment cancelled');
+            }
+            function completeCallback() {
+                alert('Completed the payment');
+                window.location.href="/receipt page";
+<!--                retrieveOrder();-->
+
+
+                }
+            function retrieveOrder(){
+                const Http = new XMLHttpRequest();
+                var merchant='TESTEGPTEST';
+                var order_id={{context['order_id']}};
+                var url="https://test-nbe.gateway.mastercard.com/api/rest/version/65/merchant/".concat(merchant,"/order/",orderid);
+                alert('url is :',url);
+                Http.open("GET", url);
+                Http.send();
+
+                Http.onreadystatechange = (e) => {
+                  alert(Http.responseText);
+
+
+            }
+
+
+<!--      ;-->
+}
+
+            Checkout.configure({
+                session: {
+                    id:  '{{context['session_id']}}',
+                    version: '{{context['session_version']}}'
+                 },
+                order: {
+                    description: 'Ordered goods',
+                    id: '{{context['order_id']}}',
+                },
+                interaction: {
+                    operation:'PURCHASE',
+
+                    merchant: {
+                        name: 'NBE Test',
+                        address: {
+                            line1: '200 Sample St',
+                            line2: '1234 Example Town'
+                        },
+                        email:'catherine@sita-eg.com'
+                    }
+                },
+            });
+        </script>
+    </head>
+    <body>
+
+
+              <p>{{ context['session_id'] }}</p>
+         <div id="embed-target"> </div>
+      <input type="button" value="Pay with Embedded Page" onclick="Checkout.showEmbeddedPage('#embed-target');" />
+
+
+    </body>
+</html>

@@ -3,8 +3,8 @@
     'name': "sita_payment_integration",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+       Integration With NBE for MPGS
+       """,
 
     'description': """
         Long description of module's purpose
@@ -20,17 +20,24 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','mail'],
+    'depends': ['base','mail','website'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'data/transaction_sequence.xml',
         'views/account_manager_view.xml',
         'views/transaction_view.xml',
+        'views/client_order_view.xml',
+        'views/home.xml',
+        'views/transaction_actions.xml',
 
     ],
     # only loaded in demonstration mode
     'demo': [
         # 'demo/demo.xml',
     ],
+    'installable':True,
+    'application':True,
+    'images': ['static/description/icon.png'],
 }
