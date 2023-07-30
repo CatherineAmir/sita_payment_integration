@@ -12,29 +12,15 @@
     <link rel="stylesheet" href="/sita_payment_integration/static/src/style.css" />
 
     <!-- system -->
-    {% if link_type=='https://test-nbe.gateway.mastercard.com/api/nvp/version/65' %}
-    <script src="https://test-nbe.gateway.mastercard.com/static/checkout/checkout.min.js" data-error="errorCallback">
-        <!--                data-error="https://sita-eg.com/">-->
-
-        <!--               data-error="https://sita-eg.com//errorPage"-->
-        <!--                data-cancel="cancelCallback" >-->
-        data - error = "errorCallback" >
-
-            <!--                data-complete="completeCallback">-->
-    </script>
-    {% else %}
-<!--    nbe.gateway.mastercard.com-->
     <script src="https://nbe.gateway.mastercard.com/static/checkout/checkout.min.js" data-error="errorCallback">
-        <!--                data-error="https://sita-eg.com/">-->
-
-        <!--               data-error="https://sita-eg.com//errorPage"-->
-        <!--                data-cancel="cancelCallback" >-->
-        data - error = "errorCallback" >
-
-            <!--                data-complete="completeCallback">-->
+        // <!--                data-error="https://sita-eg.com/">-->
+        //
+        // <!--               data-error="https://sita-eg.com//errorPage"-->
+        // <!--                data-cancel="cancelCallback" >-->
+        // data - error = "errorCallback" >
+        //
+        //     <!--                data-complete="completeCallback">-->
     </script>
-    {% endif %}
-
 
 
 
@@ -94,10 +80,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-2">
-                    <img src="/sita_payment_integration/static/src/img/client.png" class="logo" alt="" />
+<!--                    <br/>-->
+                    </br>
+                    <img src="/sita_payment_integration/static/src/img/pickalbatros.png" class="logo" alt="" />
                 </div>
                 <div class="col-md-10">
-                    <h1>Company Name</h1>
+                    <h1>{{company_id.name}}</h1>
                 </div>
             </div>
         </div>
@@ -153,7 +141,7 @@
 
             <div id="embed-target" class="container"> </div>
             <div class="mx-auto">
-                <input type="button" value="PAY NOW" class="btn btn-info btn-lg" onclick="Checkout.showEmbeddedPage('#embed-target');" />
+                <input type="button" value="PAY NOW" class="btn btn-info btn-lg" onclick="Checkout.showEmbeddedPage('#embed-target'); button.style.visibility = 'hidden';" />
             </div>
         </div>
     </div>

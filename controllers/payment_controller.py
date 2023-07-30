@@ -21,6 +21,10 @@ class PaymentRequest(http.Controller):
         link_created=order_id.link_created
         valid_till=order_id.link_validity
         link_type=order_id.account_id.api_url
+        company_id=order_id.account_id.company_id
+        context={
+            "company_id": company_id,
+        }
 
 
         if order_id.state=='not_processed' or  order_id.state=='failed':
@@ -31,7 +35,7 @@ class PaymentRequest(http.Controller):
                     order_id.link_active = False
                     TEMPLATE_FILE = "link_expires.html"
                     template = TEMPLATEENV.get_template(TEMPLATE_FILE)
-                    return template.render()
+                    return template.render(context)
                 # else:
                 #     print('pass', 'link is not create')
                 else:
@@ -64,6 +68,8 @@ class PaymentRequest(http.Controller):
                             'client_name': order_id.client_name,
                             'client_email': order_id.client_email,
                             'reservation_id': order_id.reservation_id,
+                            "company_id":company_id,
+
 
                             }
 
@@ -78,6 +84,7 @@ class PaymentRequest(http.Controller):
                         context={
                             'error':e,
                             'order_id':order_id,
+                            "company_id":company_id,
                             # 'error_cause':session_dict['error.cause'],
                             # 'error_explanation': session_dict['error.explanation'],
 
@@ -89,6 +96,7 @@ class PaymentRequest(http.Controller):
             context = {
 
                 'order_id': order_id.name,
+                "company_id":company_id,
 
             }
 
@@ -132,10 +140,12 @@ class PaymentRequest(http.Controller):
 
                     }
                     order_id.write(payment_details)
+                    company_id=order_id.account_id.company_id
                     TEMPLATE_FILE = "payment_done.html"
                     template = TEMPLATEENV.get_template(TEMPLATE_FILE)
                     context={
-                         'order_id':order_id.name
+                         'order_id':order_id.name,
+                        "company_id":company_id,
                      }
                     return template.render(context)
                else:
@@ -155,10 +165,13 @@ class PaymentRequest(http.Controller):
                        }
 
                        order_id.write(payment_details)
+                       company_id=order_id.account_id.company_id
+
                        TEMPLATE_FILE = 'session_failed.html'
                        template = TEMPLATEENV.get_template(TEMPLATE_FILE)
                        context = {
-                           'order_id': order_id.name
+                           'order_id': order_id.name,
+                           'company_id':company_id
                        }
                        return template.render(context)
 
