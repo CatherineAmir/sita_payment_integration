@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form string="Transaction">
                     <header>
-                  <button name="create_payment_link" string="Generate Payment Link" type="object" class="btn btn-primary" attrs="{'invisible':[('link_active','!=',False)]}"/>
+                  <button name="create_payment_link" string="Generate Payment Link" type="object" class="btn btn-primary" attrs="{'invisible':[('link_active','!=',False),('payment_link','=',True)]}"/>
                    <button name="get_order_state" string="Order State" type="object" class="btn btn-primary" />
 <!--                           attrs="{'invisible':[('state','=','done')]}"/>-->
 
@@ -51,7 +51,13 @@
                                 <field name="reservation_id" required="1"/>
                                 <field name="client_name" required="1"/>
                                 <field name="client_email" widget="email"/>
-                                <field name="client_mobile" required="1"/>
+                                <label for="client_mobile"/>
+                                <div>
+                                    <field name="client_mobile" id="client_mobile" required="1" class="oe_inline"/>
+<!--                                    <i class="fa fa-whatsapp" aria-hidden="true" color="green"></i>-->
+                                    <button name="send_whatsapp" type="object" class="oe_inline"  icon="fa-whatsapp" style="color:#008000"  />
+                                </div>
+
 
 
                             </group>
