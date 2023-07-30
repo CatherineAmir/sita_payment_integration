@@ -32,8 +32,8 @@
                             </group>
                             <group>
                                 <field name="account_id" required="1" options="{'no_open':1,'no_create':1}"/>
-                                <field name="link_active" widget="boolean_toggle" readonly="1"/>
-                                <field name="link_validity" required="1"/>
+<!--                                <field name="link_active" widget="boolean_toggle" readonly="1"/>-->
+
 
                             </group>
                         </group>
@@ -42,11 +42,9 @@
 
                             <group string="Payment Data">
                                  <field name="payment_subject"/>
-                                 <field name="currency_id" invisile="1"/>
+                                 <field name="currency_id" invisible="0"/>
                                 <field name="amount" options="{'widget': 'monetary'}" required="1"/>
-<!--                                <field name="link_validity"/>-->
-                                <field name="payment_link" readonly="1" widget="url"/>
-                                <field name="link_created" readonly="1"/>
+                                <field name="internal_note" />
 
                             </group>
                             <group string="Client data">
@@ -57,6 +55,21 @@
 
 
                             </group>
+                        </group>
+                        <group name="link_data" string="Link">
+                            <field name="payment_link" readonly="1" widget="url"/>
+                                <field name="link_created" readonly="1"/>
+                                 <label for="link_validity">link expiration after</label>
+                                 <div>
+
+                                      <field name="link_validity" id ="link_validity" required="1" class="oe_inline"/>
+                                        <span class="oe_inline">  Hours</span>
+
+                                </div>
+                            <field name="link_active" widget="toggle_button"/>
+
+
+
                         </group>
                         <notebook>
                             <page name="session_details" string="Session Details">
@@ -111,15 +124,13 @@
                     <field name="account_id"/>
                     <field name="currency_id"/>
                     <field name="state"/>
-                    <field name="link_active" widget="boolean_toggle"/>
+                    <field name="link_active" widget="toggle_button"/>
                     <field name="client_name"/>
                     <field name="client_email" optional="hide"/>
                      <field name="client_mobile" optional="hide"/>
                     <field name="created_on"/>
                     <field name="verified_on"/>
                     <field name="payment_link" optional="hide"/>
-
-
 
                 </tree>
             </field>
@@ -135,6 +146,11 @@
                                 context="{'group_by':'account_id'}"/>
                         <filter string="Payment State" name="payment_state" domain="[]"
                                 context="{'group_by':'state'}"/>
+                        <filter string="Successful Transaction" name="success" domain="[('state','=','done')]"/>
+                        <filter string="Failed  Transaction" name="failed" domain="[('state','=','failed')]"/>
+                        <filter string="Pending Transaction" name="pending" domain="[('state','=','pending')]"/>
+                        <filter string="New Transaction" name="new" domain="[('state','=','not_processed')]"/>
+
                         <field name="name"/>
                     </group>
                 </search>

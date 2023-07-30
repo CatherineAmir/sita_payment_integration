@@ -27,10 +27,10 @@ class Transaction(models.Model):
         states={'not_processed': [('readonly', False)]})
     # link_validity=fields.Char()
     state=fields.Selection(selection=[
-                                             ('not_processed','Not Processed'),
+                                     ('not_processed','New'),
                                             ('done', 'Done'),
                                             ('failed', 'Failed'),
-                                            ('pending', 'Pending'),],string='payment Status',tracking=1,default='not_processed',copy=False)
+                                            ('pending', 'Pending'),],string='Payment Status',tracking=1,default='not_processed',copy=False)
     payment_subject=fields.Text('Service  Description', default='Order Goods',required=1,readonly=True,
         states={'not_processed': [('readonly', False)]})
     payment_link=fields.Char(copy=False,tracking=1)
@@ -52,8 +52,14 @@ class Transaction(models.Model):
     error_cause=fields.Char('Error Cause')
     error_explanation=fields.Char('Error Explanation')
     link_active=fields.Boolean(default=False)
-    link_validity=fields.Integer(default=180,string="link expiration after")
+    link_validity=fields.Integer(default=24,string="link expiration after")
     payment_state=fields.Char('Transaction State')
+
+    internal_note=fields.Text("Internal Notes")
+
+    # def send_whatsapp(self):
+    #
+    #     url="https://wa.me/"whatsappphonenumber?text=urlencodedtext"
 
     def get_order_state(self):
        for order_id in self:
@@ -152,13 +158,13 @@ class Transaction(models.Model):
             print('order_id',order_id)
             link_created = order_id.link_created
             valid_till = order_id.link_validity
-            print('valid_till', valid_till)
-            print('link_created', link_created)
+            # print('valid_till', valid_till)
+            # print('link_created', link_created)
             if link_created:
-                if link_created + timedelta(minutes=valid_till) <= datetime.now():
-                    print('link expires')
+                if link_created + timedelta(hours=valid_till) <= datetime.now():
+                    # print('link expires')
                     order_id.link_active = False
             else:
-                print('force expire')
+                # print('force expire')
                 order_id.link_active = False
 
