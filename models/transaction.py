@@ -60,7 +60,7 @@ class Transaction(models.Model):
     internal_note = fields.Text("Internal Notes")
 
     def send_whatsapp(self):
-        print("in send_whatsapp")
+
         link = "https://web.whatsapp.com/send?phone=" + self.client_mobile
         if self.client_mobile.startswith("01"):
 
@@ -77,14 +77,11 @@ class Transaction(models.Model):
         *Your Total Amount is:* {} {} 
         *You can pay by the following link:*
         *{}*
-       
-        
-         
-                        
-        """.format(self.client_name,self.reservation_id,self.amount,self.currency_id.name,self.payment_link)
+        *This is valid for:* {} Hours         
+        """.format(self.client_name,self.reservation_id,self.amount,self.currency_id.name,self.payment_link,self.link_validity)
 
 
-        print( link + "?text=" + parse.quote(message_string))
+        # print( link + "?text=" + parse.quote(message_string))
         return {
             'type': 'ir.actions.act_url',
             'name': "Whatsapp",
@@ -101,9 +98,8 @@ class Transaction(models.Model):
             payment = Payment(account_id.integration_username, account_id.integration_password, account_id.merchant_id,
                               order_id.name, account_id.api_url)
             order_state = payment.retrieve_order()
-            print('order_state', order_state)
-            # print('order_state_result',order_state['result'])
-            # print('order_state_status', order_state['status'])
+
+
 
             try:
                 flag = 0
@@ -135,7 +131,7 @@ class Transaction(models.Model):
                     order_id.write(payment_details)
                 else:
                     try:
-                        print('in else try')
+                        # print('in else try')
 
                         date_time_obj = datetime.now()
                         if order_state['result'] == 'ERROR':
@@ -151,11 +147,11 @@ class Transaction(models.Model):
 
                         order_id.write(payment_details)
                     except Exception as e:
-                        print('Exception failed', e)
+                        # print('Exception failed', e)
                         pass
 
             except Exception as e:
-                print('Exception success', e)
+                # print('Exception success', e)
                 pass
 
     @api.constrains('amount')
