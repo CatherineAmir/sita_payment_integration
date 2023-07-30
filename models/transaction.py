@@ -77,7 +77,7 @@ class Transaction(models.Model):
         *Your Total Amount is:* {} {} 
         *You can pay by the following link:*
         *{}*
-        *This is valid for:* {} Hours         
+        *This Link is valid for:* {} Hours         
         """.format(self.client_name,self.reservation_id,self.amount,self.currency_id.name,self.payment_link,self.link_validity)
 
 

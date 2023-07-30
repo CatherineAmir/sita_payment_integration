@@ -5,9 +5,9 @@ from requests.structures import CaseInsensitiveDict
 import urllib
 host_name='localhost:8069'
 
-host_name='146.190.184.188'
+host_name='146.190.184.188:8069'
 
-
+    
 class Payment():
     def __init__(self, apiUsername, apiPassword, merchant,order_id,url):
         self.apiUsername = apiUsername

@@ -11,7 +11,7 @@ class account_manager(models.Model):
     name = fields.Char(string='Account Name',compute='_compute_name',store=1)
     company_id=fields.Many2one('res.company',required=True, readonly=False, default=lambda self: self.env.company,tracking=1)
     currency_id=fields.Many2one('res.currency',required=True, readonly=False,tracking=1,default=lambda self :  self.env.company.currency_id)
-    integration_username=fields.Char(string='API User Name',required=1,tracking=1,compute='compute_api_user_name',store=True)
+    integration_username=fields.Char(string='API User Name',tracking=1,compute='compute_api_user_name',store=True)
     integration_password=fields.Char(string='API User Password',required=1,tracking=1)
     merchant_name=fields.Char(string='Merchant Name',required=1,tracking=1)
     merchant_id=fields.Char(string='Merchant ID',required=1,tracking=1)
