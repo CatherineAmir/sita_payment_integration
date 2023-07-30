@@ -52,11 +52,13 @@
                                 <field name="client_name" required="1"/>
                                 <field name="client_email" widget="email"/>
                                 <label for="client_mobile"/>
-                                <div>
+                                <h2>
+                                     <div>
                                     <field name="client_mobile" id="client_mobile" required="1" class="oe_inline"/>
-<!--                                    <i class="fa fa-whatsapp" aria-hidden="true" color="green"></i>-->
-                                    <button name="send_whatsapp" type="object" class="oe_inline"  icon="fa-whatsapp" style="color:#008000"  />
+                                    <button name="send_whatsapp" type="object" class="oe_inline btn-large"  icon="fa-whatsapp fa-2x " style="color:#008000"   />
                                 </div>
+                                </h2>
+
 
 
 
