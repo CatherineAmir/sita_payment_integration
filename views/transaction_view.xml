@@ -150,6 +150,10 @@
             <field name="arch" type="xml">
                 <search string="Transaction Search">
                     <group expand="1" string="Group By">
+                        <filter name="created_on" date="created_on" string="Order Date"/>
+                        <filter name="verified_on" date="verified_on" string="Order Verification Date"/>
+                        <filter name="failed_on" date="failed_on" string="Order Failed on Date"/>
+
                         <filter string="Account" name="account" domain="[]"
                                 context="{'group_by':'account_id'}"/>
                         <filter string="Payment State" name="payment_state" domain="[]"
@@ -158,19 +162,66 @@
                         <filter string="Failed  Transaction" name="failed" domain="[('state','=','failed')]"/>
                         <filter string="Pending Transaction" name="pending" domain="[('state','=','pending')]"/>
                         <filter string="New Transaction" name="new" domain="[('state','=','not_processed')]"/>
-
                         <field name="name"/>
+
+                        <filter name="link_created" string="Link Generated" domain="[('link_created','!=',False)]"/>
+                        <filter name="link_not_created" string="Link Not Generated" domain="[('link_created','=',False)]"/>
+                        <filter name="link_expired" string="Link Expired" domain="[('link_active','=',False)]"/>
+                        <filter name="link Active" string="Link Active" domain="[('link_active','=',True)]"/>
                     </group>
                 </search>
             </field>
         </record>
+
+     <record model="ir.ui.view" id="state_graph_view">
+        <field name="name">payment.transaction.graph</field>
+        <field name="model">transaction</field>
+        <field name="arch" type="xml">
+            <graph string="Transaction State" type="pie">
+                <field name="state"/>
+<!--                 <field name="created_on" />-->
+                <field name="company_id"/>
+
+            </graph>
+        </field>
+
+    </record>
+
+         <record model="ir.ui.view" id="date_graph_view">
+        <field name="name">payment.transaction.graph2</field>
+        <field name="model">transaction</field>
+        <field name="arch" type="xml">
+            <graph string="Transaction Date" >
+                <field name="created_on"/>
+                <field name="company_id"/>
+
+            </graph>
+        </field>
+
+    </record>
+
+        <record id="action_for_state_graph" model="ir.actions.act_window">
+    <field name="name">By State</field>
+    <field name="res_model">transaction</field>
+
+    <field name="view_mode">graph</field>
+    <field name="view_id" ref="state_graph_view"/>
+</record>
+    <record id="action_for_date_graph" model="ir.actions.act_window">
+    <field name="name">By Date</field>
+    <field name="res_model">transaction</field>
+
+    <field name="view_mode">graph</field>
+    <field name="view_id" ref="date_graph_view"/>
+</record>
+
 
         <record id="transaction_act_window" model="ir.actions.act_window">
             <field name="name">Transaction</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">transaction</field>
 
-            <field name="view_mode">tree,form,search</field>
+            <field name="view_mode">tree,form,search,graph</field>
 
         </record>
 

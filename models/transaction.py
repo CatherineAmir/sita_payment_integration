@@ -14,6 +14,7 @@ class Transaction(models.Model):
     name = fields.Char()
     account_id = fields.Many2one('account_manager', string = "Account", tracking = 1, readonly = 0,
                                  states = {'not_processed': [('readonly', False)]})
+    company_id=fields.Many2one('res.company', string="Hotel Name",related="account_id.company_id",store=1)
     created_on = fields.Datetime(default = lambda self: datetime.now(), string = 'Order Created on')
     verified_on = fields.Datetime(string = 'Order Verified on', tracking = 1, )
     failed_on = fields.Datetime(string = 'Order Failed  on', tracking = 1)
@@ -36,6 +37,7 @@ class Transaction(models.Model):
         ('pending', 'Pending'), ], string = 'Payment Status', tracking = 1, default = 'not_processed', copy = False)
     payment_subject = fields.Text('Service  Description', default = 'Order Goods', required = 1, readonly = True,
                                   states = {'not_processed': [('readonly', False)]})
+
     payment_link = fields.Char(copy = False, tracking = 1)
     currency_id = fields.Many2one('res.currency', related = 'account_id.currency_id', store = 1)
     session_id = fields.Char(string = 'Session id', copy = False, tracking = 1)
@@ -62,26 +64,30 @@ class Transaction(models.Model):
     def send_whatsapp(self):
 
         link = "https://web.whatsapp.com/send?phone=" + self.client_mobile
-        if self.client_mobile.startswith("01"):
+        if self.client_mobile.startswith("01") and len(self.client_mobile)==11:
 
             link = "https://wa.me/"+ "+2"+self.client_mobile
         elif self.client_mobile.startswith('+'):
             link = "https://wa.me/" + "+2" + self.client_mobile
-        else :
+        elif len(self.client_mobile)<11 :
+            raise ValidationError(_("Client Mobile should be minimum 11 charachers"))
+        else:
             raise ValidationError(_("Client Mobile should Start with + and country code if the client is not Egyptian"))
 
 
         message_string="""
         *Hello {}* 
         *Your reservation id is:* {} 
+        *Your reservation description* : {}
         *Your Total Amount is:* {} {} 
         *You can pay by the following link:*
         *{}*
         *This Link is valid for:* {} Hours         
-        """.format(self.client_name,self.reservation_id,self.amount,self.currency_id.name,self.payment_link,self.link_validity)
+        """.format(self.client_name,self.reservation_id,self.payment_subject,self.amount,self.currency_id.name
+                   ,self.payment_link,self.link_validity)
 
 
-        # print( link + "?text=" + parse.quote(message_string))
+
         return {
             'type': 'ir.actions.act_url',
             'name': "Whatsapp",
@@ -89,9 +95,10 @@ class Transaction(models.Model):
             'target': 'new'
         }
 
-        # url="https://wa.me/"whatsappphonenumber?text=urlencodedtext"
+
 
     def get_order_state(self):
+        self.check_link_validity()
         for order_id in self:
 
             account_id = order_id.account_id
@@ -153,6 +160,7 @@ class Transaction(models.Model):
             except Exception as e:
                 # print('Exception success', e)
                 pass
+
 
     @api.constrains('amount')
     def check_amount(self):

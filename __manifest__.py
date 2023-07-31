@@ -20,17 +20,19 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','mail','website'],
+    'depends': ['base','mail','website','board'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'views/record_rules.xml',
         'data/transaction_sequence.xml',
         'views/account_manager_view.xml',
         'views/transaction_view.xml',
         'views/client_order_view.xml',
         'views/home.xml',
         'views/transaction_actions.xml',
+        'views/dashboard.xml',
 
     ],
     # only loaded in demonstration mode
