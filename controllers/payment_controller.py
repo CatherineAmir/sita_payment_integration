@@ -17,14 +17,16 @@ class PaymentRequest(http.Controller):
     @http.route('/checkout/order-pay/<string:order_id>/reservation_id/<string:reservation_id>', type='http', auth="public", methods= ['GET'], website=True)
     def request_value(self,**kw):
 
-        order_id=request.env['transaction'].search([('name','=',kw['order_id'])])
+        order_id=request.env['transaction'].sudo().search([('name','=',kw['order_id']),('reservation_id','=',kw['reservation_id'])],)
         link_created=order_id.link_created
+
         valid_till=order_id.link_validity
         link_type=order_id.account_id.api_url
         company_id=order_id.account_id.company_id
         context={
             "company_id": company_id,
         }
+
 
 
         if order_id.state=='not_processed' or  order_id.state=='failed':
@@ -72,11 +74,13 @@ class PaymentRequest(http.Controller):
 
 
                             }
+                        # print('context',context)
 
                         TEMPLATE_FILE = "home.html"
                         template = TEMPLATEENV.get_template(TEMPLATE_FILE)
                         return template.render(context)
                     except Exception as e:
+                        # print("exception",e)
 
 
                         TEMPLATE_FILE = "session_failed.html"
@@ -107,7 +111,7 @@ class PaymentRequest(http.Controller):
     @http.route('/success_payment', type='http', auth="none", methods=['GET','POST'])
     def success_transaction(self,**kw):
        result_indicator=kw.get('resultIndicator')
-       order_id=request.env['transaction'].search([('success_indicator','=',result_indicator)])
+       order_id=request.env['transaction'].sudo().search([('success_indicator','=',result_indicator)])
        if order_id:
 
            account_id = order_id.account_id
