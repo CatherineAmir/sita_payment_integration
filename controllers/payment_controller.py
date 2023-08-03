@@ -17,7 +17,7 @@ class PaymentRequest(http.Controller):
     @http.route('/checkout/order-pay/<string:order_id>/reservation_id/<string:reservation_id>', type='http', auth="public", methods= ['GET'], website=True)
     def request_value(self,**kw):
 
-        order_id=request.env['transaction'].sudo().search([('name','=',kw['order_id']),('reservation_id','=',kw['reservation_id'])],)
+        order_id=request.env['transaction'].sudo().search([('name','=',kw['order_id']),('reservation_id','=',kw['reservation_id'])],)[-1]
         link_created=order_id.link_created
 
         valid_till=order_id.link_validity
