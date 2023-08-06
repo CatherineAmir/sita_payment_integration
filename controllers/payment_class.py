@@ -3,9 +3,9 @@ import json
 import base64
 from requests.structures import CaseInsensitiveDict
 import urllib
-host_name='localhost:8069'
+# host_name='localhost:8069'
 
-host_name='146.190.184.188:8069'
+host_name='sita-pay.com'
 
     
 class Payment():
@@ -35,7 +35,7 @@ class Payment():
         self.order_amount = str(order_amount)
 
         payload = 'apiOperation=INITIATE_CHECKOUT&apiPassword=' + \
-                  self.apiPassword + '&apiUsername=' + self.apiUsername + '&merchant=' + self.merchant + '&interaction.operation=PURCHASE&interaction.returnUrl=http://'+host_name+'/success_payment/&order.id=' + \
+                  self.apiPassword + '&apiUsername=' + self.apiUsername + '&merchant=' + self.merchant + '&interaction.operation=PURCHASE&interaction.returnUrl=https://'+host_name+'/success_payment/&order.id=' + \
                   self.order_id + '&order.amount=' + self.order_amount + '&order.currency=' + self.order_currency
 
 
