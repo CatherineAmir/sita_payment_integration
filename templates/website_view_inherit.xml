@@ -12,7 +12,6 @@
             <a href="/web/login" class="font-weight-bold">Sign in</a>
             <div style="width:5%;"/>
             <image src="/sita_payment_integration/static/src/img/patros.png" style="width:200px;" class="logo" alt="patros"/>
-
         </xpath>
     </template>
 
@@ -22,7 +21,6 @@
          <div style="width:5%;"/>
         <image   src="/sita_payment_integration/static/src/img/sita.png" class="logo" >
             <div style="width:5%;"/>
-
         </image>
 
 
