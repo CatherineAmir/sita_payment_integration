@@ -64,6 +64,12 @@
         </xpath>
     </template>
 
+    <template id="remove_sign_up" inherit_id="auth_signup.login" name="remove_sign_up">
+        <xpath expr="//div[hasclass('justify-content-between')]" position="replace">
+
+        </xpath>
+    </template>
+
 
 
 </odoo>
