@@ -4,7 +4,14 @@ from datetime import timedelta
 from ..controllers.payment_class import Payment
 from odoo.exceptions import ValidationError
 import urllib.parse as parse
-
+# todo: add
+# todo domain account company
+# add user id and user see all transaction or hiw own transactions
+# website logo
+# website footer
+# remove contact us
+# remove
+# sign in
 
 class Transaction(models.Model):
     _name = 'transaction'
@@ -13,8 +20,9 @@ class Transaction(models.Model):
     _order = 'created_on desc'
     name = fields.Char()
     account_id = fields.Many2one('account_manager', string = "Account", tracking = 1, readonly = 0,
-                                 states = {'not_processed': [('readonly', False)]})
-    company_id=fields.Many2one('res.company', string="Hotel Name",related="account_id.company_id",store=1)
+                                 states = {'not_processed': [('readonly', False)]},store=1)
+    company_id=fields.Many2one('res.company', string="Hotel Name",default=lambda self:self.env.company.id,readonly=1)
+    user_id=fields.Many2one('res.users', string="User",default=lambda self:self.env.user.id)
     created_on = fields.Datetime(default = lambda self: datetime.now(), string = 'Order Created on')
     verified_on = fields.Datetime(string = 'Order Verified on', tracking = 1, )
     failed_on = fields.Datetime(string = 'Order Failed  on', tracking = 1)
@@ -34,7 +42,7 @@ class Transaction(models.Model):
         ('not_processed', 'New'),
         ('done', 'Done'),
         ('failed', 'Failed'),
-        ('pending', 'Pending'), ], string = 'Payment Status', tracking = 1, default = 'not_processed', copy = False)
+        ('pending', 'Pending'), ], string = 'Payment Status', tracking = 1, default = 'not_processed', copy = False,store=1)
     payment_subject = fields.Text('Service  Description', default = 'Order Goods', required = 1, readonly = True,
                                   states = {'not_processed': [('readonly', False)]})
 
