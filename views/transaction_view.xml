@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <record id="transaction" model="ir.ui.view">
+        <record id="sita_transaction_form" model="ir.ui.view">
             <field name="name">transaction.form</field>
             <field name="model">transaction</field>
             <field name="arch" type="xml">
@@ -60,7 +60,7 @@
                             </group>
                         </group>
                         <group name="link_data" string="Link">
-                            <field name="payment_link" readonly="1" widget="url"/>
+                            <field name="payment_link" widget="CopyClipboardChar" options="{'string': 'Copy Link'}" readonly="1"/>
                                 <field name="link_created" readonly="1"/>
                                  <label for="link_validity">link expiration after</label>
                                  <div>
@@ -121,6 +121,7 @@
                 <tree string="Transaction"  decoration-bf="state=='not_processed'"
                       decoration-danger="state=='failed'"   decoration-success="state=='done'">
                     <field name="name"/>
+                    <field name="reservation_id"/>
                     <field name="account_id"/>
                     <field name="currency_id"/>
                     <field name="state"/>
@@ -138,11 +139,16 @@
             </field>
         </record>
 
-        <record id="transaction_search_view" model="ir.ui.view">
+        <record id="sita_transaction_search_view" model="ir.ui.view">
             <field name="name">transaction.search</field>
             <field name="model">transaction</field>
             <field name="arch" type="xml">
                 <search string="Transaction Search">
+                    <field name="name"/>
+                    <field name="reservation_id"/>
+                    <field name="client_mobile"/>
+                    <field name="client_name"/>
+
                     <group expand="1" string="Group By">
                         <filter name="created_on" date="created_on" string="Order Date"/>
                         <filter name="verified_on" date="verified_on" string="Order Verification Date"/>
