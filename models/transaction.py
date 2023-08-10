@@ -33,8 +33,7 @@ class Transaction(models.Model):
                                states = {'not_processed': [('readonly', False)]})
     client_mobile = fields.Char('Client Mobile', tracking = 1, readonly = True,
                                 states = {'not_processed': [('readonly', False)]})
-    reservation_id = fields.Char('Reservation Number', tracking = 1, readonly = True,
-                                 states = {'not_processed': [('readonly', False)]})
+    reservation_id = fields.Char('Reservation Number', tracking = 1)
     amount = fields.Monetary('Amount', tracking = 1, readonly = True,
                              states = {'not_processed': [('readonly', False)]})
     # link_validity=fields.Char()
@@ -43,7 +42,7 @@ class Transaction(models.Model):
         ('done', 'Done'),
         ('failed', 'Failed'),
         ('pending', 'Pending'), ], string = 'Payment Status', tracking = 1, default = 'not_processed', copy = False,store=1)
-    payment_subject = fields.Text('Service  Description', default = 'Order Goods', required = 1, readonly = True,
+    payment_subject = fields.Text('Service  Description', default = 'Hotel Reservation', required = 1, readonly = True,
                                   states = {'not_processed': [('readonly', False)]})
 
     payment_link = fields.Char(copy = False, tracking = 1)
@@ -64,7 +63,7 @@ class Transaction(models.Model):
     error_cause = fields.Char('Error Cause')
     error_explanation = fields.Char('Error Explanation')
     link_active = fields.Boolean(default = False)
-    link_validity = fields.Integer(default = 24, string = "link expiration after")
+    link_validity = fields.Integer(default = 72, string = "link expiration after")
     payment_state = fields.Char('Transaction State')
 
     internal_note = fields.Text("Internal Notes")
@@ -85,13 +84,13 @@ class Transaction(models.Model):
 
         message_string="""
         *Hello {}* 
-        *Your reservation id is:* {} 
+        
         *Your reservation description* : {}
         *Your Total Amount is:* {} {} 
         *You can pay by the following link:*
         *{}*
         *This Link is valid for:* {} Hours         
-        """.format(self.client_name,self.reservation_id,self.payment_subject,self.amount,self.currency_id.name
+        """.format(self.client_name,self.payment_subject,self.amount,self.currency_id.name
                    ,self.payment_link,self.link_validity)
 
 
@@ -182,8 +181,9 @@ class Transaction(models.Model):
         return super(Transaction, self).create(vals)
 
     def create_payment_link(self):
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        link = base_url + '/checkout/order-pay/' + self.name + '/reservation_id/' + self.reservation_id
+        # base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url="https://sita-pay.com"
+        link = base_url + '/checkout/order-pay/' + self.name
         self.payment_link = link
         self.link_created = datetime.now()
         self.link_active = True
@@ -191,7 +191,7 @@ class Transaction(models.Model):
     @api.model
     def check_link_validity(self):
         time_now = datetime.now()
-        order_ids = self.env['transaction'].search([('created_on', '>', time_now - timedelta(hours = 24))])
+        order_ids = self.env['transaction'].search([('created_on', '>', time_now - timedelta(hours = 72))])
 
         for order_id in order_ids:
 

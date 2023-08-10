@@ -14,10 +14,10 @@ templateLoader = jinja2.FileSystemLoader(searchpath=searchpath)
 TEMPLATEENV = jinja2.Environment(loader=templateLoader)
 class PaymentRequest(http.Controller):
 
-    @http.route('/checkout/order-pay/<string:order_id>/reservation_id/<string:reservation_id>', type='http', auth="public", methods= ['GET'], website=True)
+    @http.route('/checkout/order-pay/<string:order_id>/', type='http', auth="public", methods= ['GET'], website=True)
     def request_value(self,**kw):
 
-        order_id=request.env['transaction'].sudo().search([('name','=',kw['order_id']),('reservation_id','=',kw['reservation_id'])],)[-1]
+        order_id=request.env['transaction'].sudo().search([('name','=',kw['order_id'])],)[-1]
         link_created=order_id.link_created
 
         valid_till=order_id.link_validity
@@ -32,7 +32,7 @@ class PaymentRequest(http.Controller):
         if order_id.state=='not_processed' or  order_id.state=='failed':
 
             if link_created:
-                if link_created + timedelta(minutes=valid_till) <= datetime.now():
+                if link_created + timedelta(hours=valid_till) <= datetime.now():
                     # print('link expires')
                     order_id.link_active = False
                     TEMPLATE_FILE = "link_expires.html"
@@ -48,13 +48,12 @@ class PaymentRequest(http.Controller):
                     try:
                         session_dict = payment.authorize(order_id.currency_id.name, order_id.name, order_id.amount)
                         # print('session_dict',session_dict)
+                        # print('session_created')
                         transaction_vals={
                             'session_id':payment.session_id,
                             'session_version': payment.session_version,
                             'success_indicator':payment.success_indicator,
                             'result':payment.result,
-
-
                         }
                         order_id.write(transaction_vals)
 
@@ -69,7 +68,7 @@ class PaymentRequest(http.Controller):
                             'description':order_id.payment_subject,
                             'client_name': order_id.client_name,
                             'client_email': order_id.client_email,
-                            'reservation_id': order_id.reservation_id,
+                            # 'reservation_id': order_id.reservation_id,
                             "company_id":company_id,
 
 

@@ -46,7 +46,7 @@
                                 <field name="internal_note" />
                             </group>
                             <group string="Client data">
-                                <field name="reservation_id" required="1"/>
+                                <field name="reservation_id"/>
                                 <field name="client_name" required="1"/>
                                 <field name="client_email" widget="email"/>
                                 <label for="client_mobile"/>
@@ -121,14 +121,15 @@
                 <tree string="Transaction"  decoration-bf="state=='not_processed'"
                       decoration-danger="state=='failed'"   decoration-success="state=='done'">
                     <field name="name"/>
-                    <field name="reservation_id"/>
+                    <field name="client_name"/>
+                    <field name="client_mobile"/>
+
                     <field name="account_id"/>
                     <field name="currency_id"/>
                     <field name="state"/>
                     <field name="link_active" widget="toggle_button"/>
-                    <field name="client_name"/>
-                    <field name="client_email" optional="hide"/>
-                     <field name="client_mobile" optional="hide"/>
+                    <field name="reservation_id"/>
+
                     <field name="created_on"/>
                     <field name="verified_on"/>
                     <field name="user_id"/>

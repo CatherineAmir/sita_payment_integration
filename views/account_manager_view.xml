@@ -66,14 +66,6 @@
 
    <menuitem id="payment_integration" name="Sita Payment Integration" sequence="0"/>
 <!--    <menuitem name="payment Integration" id="payment_integration" />-->
-    <menuitem name="Account manager" id="account_manager_menu" parent="payment_integration" action="account_manager_action_window" sequence="100"/>
--->
-    <!-- actions -->
-<!--
-    <menuitem name="List" id="sita_payment_integration.menu_1_list" parent="sita_payment_integration.menu_1"
-              action="sita_payment_integration.action_window"/>
-    <menuitem name="Server to list" id="sita_payment_integration" parent="sita_payment_integration.menu_2"
-              action="sita_payment_integration.action_server"/>
--->
+    <menuitem name="Account manager" id="account_manager_menu" parent="payment_integration" action="account_manager_action_window" sequence="100" groups="sita_payment_integration.accounts_viewer"/>
   </data>
 </odoo>

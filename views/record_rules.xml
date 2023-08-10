@@ -17,6 +17,17 @@
 			<field name="implied_ids" eval="[(4, ref('sita_payment_integration.group_pay_his_documents'))]"/>
         </record>
 
+		<record id="dashboards_viewer" model="res.groups">
+	        <field name="name">DashBoard Viewer</field>
+	        <field name="category_id" ref="module_category_sita_pay"/>
+        </record>
+
+		<record id="accounts_viewer" model="res.groups">
+	        <field name="name">Accounts Viewer</field>
+	        <field name="category_id" ref="module_category_sita_pay"/>
+        </record>
+
+
 
 		<record model="ir.rule" id="record_restricted_company_rule">
     <field name="name">Restricted Record: multi-company</field>

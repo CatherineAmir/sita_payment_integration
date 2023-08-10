@@ -46,7 +46,7 @@
         <field name="view_id" ref="dashboard_form_payment_transaction"/>
     </record>
     <menuitem name="Dashboard"  parent="sita_payment_integration.payment_integration"
-        id="dashboard_1" sequence="1" action="transactions_dashboard"/>
+        id="dashboard_1" sequence="1" action="transactions_dashboard" groups="sita_payment_integration.dashboards_viewer"/>
 
 
 	</data>
