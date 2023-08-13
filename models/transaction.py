@@ -18,20 +18,20 @@ class Transaction(models.Model):
     _inherit = 'mail.thread'
     _description = 'details for transaction'
     _order = 'created_on desc'
-    name = fields.Char()
+    name = fields.Char(string="Transaction")
     account_id = fields.Many2one('account_manager', string = "Account", tracking = 1, readonly = 0,
                                  states = {'not_processed': [('readonly', False)]},store=1)
     company_id=fields.Many2one('res.company', string="Hotel Name",default=lambda self:self.env.company.id,readonly=1)
     user_id=fields.Many2one('res.users', string="User",default=lambda self:self.env.user.id)
-    created_on = fields.Datetime(default = lambda self: datetime.now(), string = 'Order Created on')
-    verified_on = fields.Datetime(string = 'Order Verified on', tracking = 1, )
-    failed_on = fields.Datetime(string = 'Order Failed  on', tracking = 1)
-    link_created = fields.Datetime(string = 'Link Created on', tracking = 1)
-    client_name = fields.Char('Client Name', tracking = 1, readonly = True,
+    created_on = fields.Datetime(default = lambda self: datetime.now(), string = 'Created on')
+    verified_on = fields.Datetime(string = 'Verified on', tracking = 1, )
+    failed_on = fields.Datetime(string = 'Failed  on', tracking = 1)
+    link_created = fields.Datetime(string = 'Link Creation Date', tracking = 1)
+    client_name = fields.Char('Guest Name', tracking = 1, readonly = True,
                               states = {'not_processed': [('readonly', False)]})
-    client_email = fields.Char('Client Email', tracking = 1, readonly = True,
+    client_email = fields.Char('Guest Email', tracking = 1, readonly = True,
                                states = {'not_processed': [('readonly', False)]})
-    client_mobile = fields.Char('Client Mobile', tracking = 1, readonly = True,
+    client_mobile = fields.Char('Guest Mobile', tracking = 1, readonly = True,
                                 states = {'not_processed': [('readonly', False)]})
     reservation_id = fields.Char('Reservation Number', tracking = 1)
     amount = fields.Monetary('Amount', tracking = 1, readonly = True,
@@ -47,7 +47,7 @@ class Transaction(models.Model):
 
     payment_link = fields.Char(copy = False, tracking = 1)
     currency_id = fields.Many2one('res.currency', related = 'account_id.currency_id', store = 1)
-    session_id = fields.Char(string = 'Session id', copy = False, tracking = 1)
+    session_id = fields.Char(string = 'Session ID', copy = False, tracking = 1)
     session_version = fields.Char(string = 'Session Version', copy = False, tracking = 1)
     success_indicator = fields.Char(string = "Success Indicator", copy = False, tracking = 1)
     result = fields.Char(string = " Result", copy = False, tracking = 1)
@@ -63,7 +63,7 @@ class Transaction(models.Model):
     error_cause = fields.Char('Error Cause')
     error_explanation = fields.Char('Error Explanation')
     link_active = fields.Boolean(default = False)
-    link_validity = fields.Integer(default = 72, string = "link expiration after")
+    link_validity = fields.Integer(default = 72, string = "Link expiration after")
     payment_state = fields.Char('Transaction State')
 
     internal_note = fields.Text("Internal Notes")

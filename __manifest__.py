@@ -33,12 +33,15 @@
         'views/home.xml',
         'views/transaction_actions.xml',
         'views/dashboard.xml',
-        'templates/website_view_inherit.xml',
+
 
     ],
     # only loaded in demonstration mode
     'demo': [
         # 'demo/demo.xml',
+    ],
+    "qweb":[
+        'static/src/xml/base_templates.xml',
     ],
     'installable':True,
     'application':True,
