@@ -69,7 +69,7 @@
                                         <span class="oe_inline">  Hours</span>
 
                                 </div>
-                            <field name="link_active" widget="toggle_button"/>
+                            <field name="link_active" readonly="1"/>
 
                         </group>
                         <notebook>
@@ -118,7 +118,7 @@
             <field name="name">transaction.tree</field>
             <field name="model">transaction</field>
             <field name="arch" type="xml">
-                <tree string="Transaction"  decoration-bf="state=='not_processed'"
+                <tree string="Transaction"  decoration-info="state=='not_processed'"
                       decoration-danger="state=='failed'"   decoration-success="state=='done'">
                     <field name="name"/>
                     <field name="client_name"/>
@@ -128,7 +128,7 @@
                     <field name="account_id"/>
                     <field name="currency_id"/>
                     <field name="state"/>
-                    <field name="link_active" widget="toggle_button"/>
+                    <field name="link_active" readonly="1"/>
                     <field name="created_on"/>
                     <field name="verified_on"/>
                     <field name="user_id"/>
@@ -176,6 +176,9 @@
                         <filter name="link_not_created" string="Link Not Generated" domain="[('link_created','=',False)]"/>
                         <filter name="link_expired" string="Link Expired" domain="[('link_active','=',False)]"/>
                         <filter name="link Active" string="Link Active" domain="[('link_active','=',True)]"/>
+                        <filter name="Archived" string="Archived" domain="[('active','=',False)]"/>
+
+
                     </group>
                 </search>
             </field>

@@ -39,9 +39,12 @@ class Transaction(models.Model):
     # link_validity=fields.Char()
     state = fields.Selection(selection = [
         ('not_processed', 'New'),
-        ('done', 'Done'),
+        ('done', 'Paid'),
         ('failed', 'Failed'),
-        ('pending', 'Pending'), ], string = 'Payment Status', tracking = 1, default = 'not_processed', copy = False,store=1)
+        ('pending', 'Pending'),
+        ('expired',"Expired"),
+
+    ], string = 'Payment Status', tracking = 1, default = 'not_processed', copy = False,store=1)
     payment_subject = fields.Text('Service  Description', default = 'Hotel Reservation', required = 1, readonly = True,
                                   states = {'not_processed': [('readonly', False)]})
 
@@ -67,6 +70,7 @@ class Transaction(models.Model):
     payment_state = fields.Char('Transaction State')
 
     internal_note = fields.Text("Internal Notes")
+    active=fields.Boolean("Active",default = True)
 
     def send_whatsapp(self):
 
@@ -190,7 +194,7 @@ class Transaction(models.Model):
 
     @api.model
     def check_link_validity(self):
-        time_now = datetime.now()
+
         order_ids = self.env['transaction'].sudo().search([("link_active","=",True)])
 
         for order_id in order_ids:
@@ -201,6 +205,7 @@ class Transaction(models.Model):
                 if link_created + timedelta(hours = valid_till) <= datetime.now():
 
                     order_id.link_active = False
+                    order_id.state='expired'
             else:
 
                 order_id.link_active = False
