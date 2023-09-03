@@ -145,6 +145,7 @@
             <field name="model">transaction</field>
             <field name="arch" type="xml">
                 <search string="Transaction Search">
+                    <field name="company_id" string="Hotel Name"/>
                     <field name="name"/>
                     <field name="reservation_id"/>
                     <field name="client_mobile"/>
@@ -155,7 +156,7 @@
                         <filter name="verified_on" date="verified_on" string="Order Verification Date"/>
                         <filter name="failed_on" date="failed_on" string="Order Failed on Date"/>
 
-                        <filter string="Company" name="company" domain="[]"
+                        <filter string="Hotel" name="company" domain="[]"
                                 context="{'group_by':'company_id'}"/>
                         <filter string="User" name="user" domain="[]"
                                 context="{'group_by':'user_id'}"/>
@@ -177,7 +178,7 @@
                         <filter name="link_expired" string="Link Expired" domain="[('link_active','=',False)]"/>
                         <filter name="link Active" string="Link Active" domain="[('link_active','=',True)]"/>
                         <filter name="Archived" string="Archived" domain="[('active','=',False)]"/>
-
+<!--                        <filter name="Active" string="Active" domain="[('active','=',True)]"/>-->
 
                     </group>
                 </search>
