@@ -34,6 +34,7 @@
         'views/transaction_actions.xml',
         'views/dashboard.xml',
         'templates/website_view_inherit.xml',
+        'reports/transaction_single_report.xml',
 
 
     ],

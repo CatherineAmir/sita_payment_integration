@@ -57,10 +57,10 @@ class Transaction(models.Model):
     authentication_status = fields.Char(string = 'Authentication Status', copy = False, tracking = 1)
 
     # order_reterive_field=
-    amount_charged = fields.Float('Amount Charged')
+    amount_charged = fields.Monetary('Amount Charged')
     auth_3d_transaction_id = fields.Char()
     certainty = fields.Char()
-    chargeback_amount = fields.Float('Charge back amount')
+    chargeback_amount = fields.Monetary('Charge back amount')
     chargeback_currency = fields.Char('Charge back Currency')
 
     error_cause = fields.Char('Error Cause')
