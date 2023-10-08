@@ -205,7 +205,11 @@ class Transaction(models.Model):
                 if link_created + timedelta(hours = valid_till) <= datetime.now():
 
                     order_id.link_active = False
-                    order_id.state='expired'
+                    if not order_id.verified_on or order_id.state!="done":
+                        order_id.state='expired'
+                    else:
+                        order_id.state="done"
+
             else:
 
                 order_id.link_active = False
